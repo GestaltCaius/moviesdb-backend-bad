@@ -1,13 +1,10 @@
 package fr.technocrats.greenitbackend.movies;
 
-import lombok.Data;
-
 import javax.persistence.*;
 
 
 @Entity
 @Table(name = "MOVIES")
-@Data
 public class Movie {
     @Id
     @Column
@@ -31,5 +28,4 @@ public class Movie {
 
     @Column
     public Integer vote_average;
-
 }

@@ -2,7 +2,6 @@ package fr.technocrats.greenitbackend.movies;
 
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,16 +15,6 @@ import java.util.List;
 @CrossOrigin
 public class MovieController {
 
-    @Value("${tmdb_base_url}")
-    public String tmdbBaseUrl;
-
-    @Value("${tmdb_api_key}")
-    public String tmdbApiKey;
-
-    @Value("${tmdb_image_path_base_url}")
-    public String tmdbImageBaseUrl;
-
-
     @Autowired
     public MovieDao movieDao;
 
@@ -34,7 +23,7 @@ public class MovieController {
 
         List<Movie> c = new ArrayList<>();
         for (int i = 1; i <= 20; i++) {
-            Object a = restTemplate.getForObject(tmdbBaseUrl + "/movie/popular?api_key=" + tmdbApiKey + "&page="+ i, Object.class);
+            Object a = restTemplate.getForObject("https://api.themoviedb.org/3/movie/popular?api_key=9f043e22ed90149fa2a95676562139e6&page="+ i, Object.class);
             LinkedHashMap b = (LinkedHashMap) a;
             List<Movie> tmp = new ArrayList<>();
             for (LinkedHashMap e : (List<LinkedHashMap>) b.get("results")) {
@@ -54,7 +43,7 @@ public class MovieController {
                 c.add(m);
             }
         }
-        movieDao.addMovieList(c, tmdbImageBaseUrl);
+        movieDao.addMovieList(c);
         return movieDao.findAll().size();
     }
 
